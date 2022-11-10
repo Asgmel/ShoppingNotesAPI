@@ -12,5 +12,7 @@ namespace ShoppingNotes.Models
 
         [Required]
         public string? LastName { get; set; }
+
+        public ICollection<SList> SLists { get; set; } = new List<SList>();
     }
 }

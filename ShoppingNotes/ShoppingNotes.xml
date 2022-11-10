@@ -1,0 +1,332 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ShoppingNotes</name>
+    </assembly>
+    <members>
+        <member name="M:ShoppingNotes.Controllers.NotesController.#ctor(ShoppingNotes.Data.INoteRepo,ShoppingNotes.Data.ISListRepo,AutoMapper.IMapper)">
+            <summary>
+            A controller for actions related to notes
+            </summary>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.NotesController.GetAllNotes(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Gets all notes for a user, or a list if listId is specified.
+            </summary>
+            <param name="listId">OPTIONAL - List listId to filter results by</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <returns>A list of notes</returns>
+            <response code="200">OK - Returns the requested notes</response>
+            <response code="400">Bad Request - Invalid user input</response>
+            <response code="403">Forbidden - User is not authorized to access the supplied listId notes</response>
+            <response code="404">Not Found - The supplied listId was not found</response>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.NotesController.GetNoteById(System.Int32,System.Int32)">
+            <summary>
+            Gets a single note by ID
+            </summary>
+            <param name="id">The ID of the note to fetch</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <returns>A note</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.NotesController.CreateNote(System.Int32,ShoppingNotes.Dtos.NoteCreateDto)">
+            <summary>
+            Create a new note
+            </summary>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <param name="noteCreateDto">The note object</param>
+            <returns>The created note</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.NotesController.UpdateNote(System.Int32,System.Int32,ShoppingNotes.Dtos.NoteUpdateDto)">
+            <summary>
+            Update a note with the PUT method
+            </summary>
+            <param name="id">The noteId to update</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <param name="noteUpdateDto">The note body with updated values</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.NotesController.PartiallyUpdateNote(System.Int32,System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{ShoppingNotes.Dtos.NoteUpdateDto})">
+            <summary>
+            Update the note with the PATCH method
+            </summary>
+            <param name="id">The id of the note to update</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <param name="patchDocument">The patchdocument body</param>
+            <returns>An Actionresult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.NotesController.DeleteNote(System.Int32,System.Int32)">
+            <summary>
+            Deletes a note
+            </summary>
+            <param name="id">The id of the note to delete</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.SListsController.GetAllLists(System.Int32)">
+            <summary>
+            Gets all lists for a user
+            </summary>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <returns>A list of lists</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.SListsController.GetListById(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Gets a single list by ID
+            </summary>
+            <param name="id">The list ID</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <param name="includeNotes">true if the result should include the lists notes, false otherwise</param>
+            <returns>A single list</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.SListsController.CreateList(ShoppingNotes.Dtos.SListCreateDto)">
+            <summary>
+            Creates a new list
+            </summary>
+            <param name="sListCreateDto">The list body</param>
+            <returns>The created list</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.SListsController.UpdateList(System.Int32,System.Int32,ShoppingNotes.Dtos.SListUpdateDto)">
+            <summary>
+            Updates a list by ID with the PUT method
+            </summary>
+            <param name="id">The id of the list to update</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <param name="sListUpdateDto">The update body</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.SListsController.PartiallyUpdateList(System.Int32,System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{ShoppingNotes.Dtos.SListUpdateDto})">
+            <summary>
+            Updates a list by ID with the PATCH method
+            </summary>
+            <param name="id">The list id</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <param name="patchDocument">The patchdocument body</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.SListsController.DeleteList(System.Int32,System.Int32)">
+            <summary>
+            Deletes a list and all its tasks from the DB
+            </summary>
+            <param name="id">The list ID</param>
+            <param name="userId">The user ID - Will be replaced by authentication</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.UsersController.GetUserById(System.Int32)">
+            <summary>
+            Gets a single user by ID
+            </summary>
+            <param name="id">The user ID</param>
+            <returns>The user</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.UsersController.CreateUser(ShoppingNotes.Dtos.UserCreateDto)">
+            <summary>
+            Creates a new user
+            </summary>
+            <param name="userCreateDto">The user object</param>
+            <returns>The created user</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.UsersController.UpdateUser(System.Int32,ShoppingNotes.Dtos.UserUpdateDto)">
+            <summary>
+            Updates a user by ID with the PUT method
+            </summary>
+            <param name="id">The user ID</param>
+            <param name="userUpdateDto">The update body</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.UsersController.PartiallyUpdateUser(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{ShoppingNotes.Dtos.UserUpdateDto})">
+            <summary>
+            Updates a user by ID with the PATCH method
+            </summary>
+            <param name="id">The user ID</param>
+            <param name="patchDocument">The patchDocument body</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="M:ShoppingNotes.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Deletes an user and all their lists and notes.
+            </summary>
+            <param name="id">The user ID</param>
+            <returns>An ActionResult (NoContent)</returns>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.NoteCreateDto">
+            <summary>
+            A DTO for creating notes
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteCreateDto.Content">
+            <summary>
+            The note content
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteCreateDto.IsCompleted">
+            <summary>
+            The note status, true if completed, false if not
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteCreateDto.SListId">
+            <summary>
+            The ID of the list where the note lives
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.NoteReadDto">
+            <summary>
+            A DTO for reading notes
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteReadDto.Id">
+            <summary>
+            The note ID
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteReadDto.Content">
+            <summary>
+            The note contents
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteReadDto.IsCompleted">
+            <summary>
+            The note status, true if completed, false if not
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteReadDto.SListId">
+            <summary>
+            The ID of the list where the note lives
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.NoteUpdateDto">
+            <summary>
+            A DTO for updating Notes
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteUpdateDto.Content">
+            <summary>
+            The note content
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.NoteUpdateDto.IsCompleted">
+            <summary>
+            The note status, true if completed, false if not
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.SListCreateDto">
+            <summary>
+            A DTO for creating lists
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.SListCreateDto.Name">
+            <summary>
+            The list name
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.SListCreateDto.UserId">
+            <summary>
+            The ID of the user that creates the list
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.SListReadDto">
+            <summary>
+            A DTO for reading lists
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.SListReadDto.Id">
+            <summary>
+            The list ID
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.SListReadDto.Name">
+            <summary>
+            The list name
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.SListReadDto.UserId">
+            <summary>
+            The ID of the user that created the list
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.SListUpdateDto">
+            <summary>
+            A DTO for updating lists
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.SListUpdateDto.Name">
+            <summary>
+            The list name
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.UserCreateDto">
+            <summary>
+            A DTO for creating users
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserCreateDto.FirstName">
+            <summary>
+            The users first name
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserCreateDto.LastName">
+            <summary>
+            The users last name
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.UserReadDto">
+            <summary>
+            A DTO for reading users
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserReadDto.Id">
+            <summary>
+            The users ID
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserReadDto.FirstName">
+            <summary>
+            The users first name
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserReadDto.LastName">
+            <summary>
+            The users last name
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Dtos.UserUpdateDto">
+            <summary>
+            A DTO for updating users
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserUpdateDto.FirstName">
+            <summary>
+            The users first name
+            </summary>
+        </member>
+        <member name="P:ShoppingNotes.Dtos.UserUpdateDto.LastName">
+            <summary>
+            The users last name
+            </summary>
+        </member>
+        <member name="T:ShoppingNotes.Migrations.NotesAppInitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:ShoppingNotes.Migrations.NotesAppInitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ShoppingNotes.Migrations.NotesAppInitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ShoppingNotes.Migrations.NotesAppInitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ShoppingNotes.Migrations.NotesUpdatedRelationsships">
+            <inheritdoc />
+        </member>
+        <member name="M:ShoppingNotes.Migrations.NotesUpdatedRelationsships.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ShoppingNotes.Migrations.NotesUpdatedRelationsships.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ShoppingNotes.Migrations.NotesUpdatedRelationsships.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

@@ -11,9 +11,12 @@ namespace ShoppingNotes.Models
         [MaxLength(100)]
         public string? Content { get; set; }
 
-        [Required]
-        public int OwnerId { get; set; }
-
         public bool IsCompleted { get; set; } = false;
+
+        [Required]
+        public int SListId { get; set; }
+
+        [Required]
+        public SList? SList { get; set; }
     }
 }
