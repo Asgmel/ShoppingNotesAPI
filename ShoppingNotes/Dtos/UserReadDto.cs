@@ -13,13 +13,8 @@ namespace ShoppingNotes.Dtos
         public int Id { get; set; }
 
         /// <summary>
-        /// The users first name
+        /// The users user name
         /// </summary>
-        public string? FirstName { get; set; }
-
-        /// <summary>
-        /// The users last name
-        /// </summary>
-        public string? LastName { get; set; }
+        public string? UserName { get; set; }
     }
 }

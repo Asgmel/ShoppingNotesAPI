@@ -2,6 +2,7 @@
 
 namespace ShoppingNotes.Data
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public interface INoteRepo
     {
         Task<IEnumerable<Note>> GetAllNotesAsync(int userId);
@@ -12,4 +13,5 @@ namespace ShoppingNotes.Data
         void DeleteNotes(IEnumerable<Note> notes);
         Task SaveChangesAsync();
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

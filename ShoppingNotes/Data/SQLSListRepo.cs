@@ -3,11 +3,12 @@ using ShoppingNotes.Models;
 
 namespace ShoppingNotes.Data
 {
-    public class SListRepo : ISListRepo
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public class SQLSListRepo : ISListRepo
     {
-        private readonly NotesDbContext _context;
+        private readonly SQLDbContext _context;
 
-        public SListRepo(NotesDbContext context)
+        public SQLSListRepo(SQLDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -42,7 +43,7 @@ namespace ShoppingNotes.Data
             return await _context.Lists.Where(l => l.UserId == userId).ToListAsync();
         }
 
-        public async Task<SList?> GetListByIdAsync(int id, bool includeNotes = true)
+        public async Task<SList?> GetListByIdAsync(int id)
         {
             return await _context.Lists.FirstOrDefaultAsync(l => l.Id == id);
         }
@@ -52,4 +53,5 @@ namespace ShoppingNotes.Data
             await _context.SaveChangesAsync();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

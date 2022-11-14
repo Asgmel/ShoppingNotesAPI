@@ -3,11 +3,12 @@ using ShoppingNotes.Models;
 
 namespace ShoppingNotes.Data
 {
-    public class NoteRepo : INoteRepo
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public class SQLNoteRepo : INoteRepo
     {
-        private readonly NotesDbContext _context;
+        private readonly SQLDbContext _context;
 
-        public NoteRepo(NotesDbContext context)
+        public SQLNoteRepo(SQLDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -66,4 +67,5 @@ namespace ShoppingNotes.Data
             await _context.SaveChangesAsync();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

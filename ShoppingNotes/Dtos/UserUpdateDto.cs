@@ -3,22 +3,29 @@
 namespace ShoppingNotes.Dtos
 {
     /// <summary>
-    /// A DTO for updating users
+    /// A DTO for updating users passwords
     /// </summary>
     public class UserUpdateDto
     {
         /// <summary>
-        /// The users first name
+        /// The users current password
         /// </summary>
         [Required]
         [MaxLength(50)]
-        public string? FirstName { get; set; }
+        public string? CurrentPassword { get; set; }
 
         /// <summary>
-        /// The users last name
+        /// The users new password
         /// </summary>
         [Required]
         [MaxLength(50)]
-        public string? LastName { get; set; }
+        public string? NewPassword { get; set; }
+
+        /// <summary>
+        /// The users new password repeated
+        /// </summary>
+        [Required]
+        [MaxLength(50)]
+        public string? RepeatNewPassword { get; set; }
     }
 }

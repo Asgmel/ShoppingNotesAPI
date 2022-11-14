@@ -9,7 +9,7 @@ using ShoppingNotes.Data;
 
 namespace ShoppingNotes.Migrations
 {
-    [DbContext(typeof(NotesDbContext))]
+    [DbContext(typeof(SQLDbContext))]
     [Migration("20221108112107_NotesAppInitialMigration")]
     partial class NotesAppInitialMigration
     {

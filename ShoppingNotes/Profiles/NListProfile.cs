@@ -4,6 +4,7 @@ using ShoppingNotes.Models;
 
 namespace ShoppingNotes.Profiles
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class NListProfile : Profile
     {
         public NListProfile()
@@ -14,4 +15,5 @@ namespace ShoppingNotes.Profiles
             CreateMap<SListUpdateDto, SList>();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

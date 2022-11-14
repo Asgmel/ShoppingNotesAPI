@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingNotes.Data;
@@ -7,16 +8,21 @@ using ShoppingNotes.Models;
 
 namespace ShoppingNotes.Controllers
 {
+    /// <summary>
+    /// The controller for actions related to notes
+    /// </summary>
     [Route("api/v1/[controller]")]
+    [Authorize]
     [ApiController]
     public class NotesController : ControllerBase
     {
+        private const string IdType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
         private readonly INoteRepo _noteRepo;
         private readonly ISListRepo _sListRepo;
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// A controller for actions related to notes
+        /// Notes Constructor
         /// </summary>
         public NotesController(INoteRepo noteRepo, ISListRepo sListRepo, IMapper mapper)
         {
@@ -29,20 +35,17 @@ namespace ShoppingNotes.Controllers
         /// Gets all notes for a user, or a list if listId is specified.
         /// </summary>
         /// <param name="listId">OPTIONAL - List listId to filter results by</param>
-        /// <param name="userId">The user ID - Will be replaced by authentication</param>
         /// <returns>A list of notes</returns>
         /// <response code="200">OK - Returns the requested notes</response>
         /// <response code="400">Bad Request - Invalid user input</response>
         /// <response code="403">Forbidden - User is not authorized to access the supplied listId notes</response>
         /// <response code="404">Not Found - The supplied listId was not found</response>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<NoteReadDto>>> GetAllNotes(int? listId, int userId)
+        public async Task<ActionResult<IEnumerable<NoteReadDto>>> GetAllNotes(int? listId)
         {
             IEnumerable<Note> notes = new List<Note>();
+
+            int userId = Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == IdType)?.Value!);
 
             if (listId != null)
             {
@@ -74,14 +77,13 @@ namespace ShoppingNotes.Controllers
         /// Gets a single note by ID
         /// </summary>
         /// <param name="id">The ID of the note to fetch</param>
-        /// <param name="userId">The user ID - Will be replaced by authentication</param>
         /// <returns>A note</returns>
         /// <response code="200">OK - Returns the requested note</response>
         /// <response code="400">Bad Request - Invalid user input</response>
         /// <response code="403">Forbidden - User is not authorized to access the note</response>
         /// <response code="404">Not Found - The supplied note was not found</response>
         [HttpGet("{id}", Name = "GetNoteById")]
-        public async Task<ActionResult<NoteReadDto>> GetNoteById(int id, int userId)
+        public async Task<ActionResult<NoteReadDto>> GetNoteById(int id)
         {
             var note = await _noteRepo.GetNoteByIdAsync(id);
 
@@ -97,6 +99,8 @@ namespace ShoppingNotes.Controllers
                 return NotFound();
             }
 
+            int userId = Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == IdType)?.Value!);
+
             if (sList.UserId != userId)
             {
                 return Forbid();
@@ -110,15 +114,14 @@ namespace ShoppingNotes.Controllers
         /// <summary>
         /// Create a new note
         /// </summary>
-        /// <param name="userId">The user ID - Will be replaced by authentication</param>
         /// <param name="noteCreateDto">The note object</param>
         /// <returns>The created note</returns>
         /// <response code="200">OK - Creates the note</response>
         /// <response code="400">Bad Request - Invalid user input</response>
-        /// <response code="403">Forbidden - User is not authorized to access the note</response>
+        /// <response code="403">Forbidden - User is not authorized to create the note</response>
         /// <response code="404">Not Found - The list was not found</response>
         [HttpPost]
-        public async Task<ActionResult<SListReadDto>> CreateNote(int userId, NoteCreateDto noteCreateDto)
+        public async Task<ActionResult<SListReadDto>> CreateNote(NoteCreateDto noteCreateDto)
         {
             var sList = await _sListRepo.GetListByIdAsync(noteCreateDto.SListId, false);
 
@@ -126,6 +129,8 @@ namespace ShoppingNotes.Controllers
             {
                 return NotFound();
             }
+
+            int userId = Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == IdType)?.Value!);
 
             if (sList.UserId != userId)
             {
@@ -145,15 +150,14 @@ namespace ShoppingNotes.Controllers
         /// Update a note with the PUT method
         /// </summary>
         /// <param name="id">The noteId to update</param>
-        /// <param name="userId">The user ID - Will be replaced by authentication</param>
         /// <param name="noteUpdateDto">The note body with updated values</param>
         /// <returns>An ActionResult (NoContent)</returns>
         /// <response code="204">NoContent - The note was updated successfully</response>
         /// <response code="400">Bad Request - Invalid user input</response>
-        /// <response code="403">Forbidden - User is not authorized to access the note</response>
+        /// <response code="403">Forbidden - User is not authorized to update the note</response>
         /// <response code="404">Not Found - The supplied note was not found</response>
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateNote(int id, int userId, NoteUpdateDto noteUpdateDto)
+        public async Task<ActionResult> UpdateNote(int id, NoteUpdateDto noteUpdateDto)
         {
             var note = await _noteRepo.GetNoteByIdAsync(id);
 
@@ -168,6 +172,8 @@ namespace ShoppingNotes.Controllers
             {
                 return NotFound();
             }
+
+            int userId = Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == IdType)?.Value!);
 
             if (sList.UserId != userId)
             {
@@ -185,11 +191,14 @@ namespace ShoppingNotes.Controllers
         /// Update the note with the PATCH method
         /// </summary>
         /// <param name="id">The id of the note to update</param>
-        /// <param name="userId">The user ID - Will be replaced by authentication</param>
         /// <param name="patchDocument">The patchdocument body</param>
         /// <returns>An Actionresult (NoContent)</returns>
+        /// <response code="204">NoContent - The note was updated successfully</response>
+        /// <response code="400">Bad Request - Invalid user input</response>
+        /// <response code="403">Forbidden - User is not authorized to update the note</response>
+        /// <response code="404">Not Found - The supplied note was not found</response>
         [HttpPatch("{id}")]
-        public async Task<ActionResult> PartiallyUpdateNote(int id, int userId, JsonPatchDocument<NoteUpdateDto> patchDocument)
+        public async Task<ActionResult> PartiallyUpdateNote(int id, JsonPatchDocument<NoteUpdateDto> patchDocument)
         {
             var note = await _noteRepo.GetNoteByIdAsync(id);
 
@@ -204,6 +213,8 @@ namespace ShoppingNotes.Controllers
             {
                 return NotFound();
             }
+
+            int userId = Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == IdType)?.Value!);
 
             if (sList.UserId != userId)
             {
@@ -235,10 +246,13 @@ namespace ShoppingNotes.Controllers
         /// Deletes a note
         /// </summary>
         /// <param name="id">The id of the note to delete</param>
-        /// <param name="userId">The user ID - Will be replaced by authentication</param>
         /// <returns>An ActionResult (NoContent)</returns>
+        /// <response code="204">NoContent - The note was deleted successfully</response>
+        /// <response code="400">Bad Request - Invalid user input</response>
+        /// <response code="403">Forbidden - User is not authorized to delete the note</response>
+        /// <response code="404">Not Found - The supplied note was not found</response>
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteNote(int id, int userId)
+        public async Task<ActionResult> DeleteNote(int id)
         {
             var note = await _noteRepo.GetNoteByIdAsync(id);
 
@@ -252,6 +266,8 @@ namespace ShoppingNotes.Controllers
             {
                 return NotFound("List not found");
             }
+
+            int userId = Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == IdType)?.Value!);
 
             if (sList.UserId != userId)
             {

@@ -3,11 +3,12 @@ using ShoppingNotes.Models;
 
 namespace ShoppingNotes.Data
 {
-    public class UserRepo : IUserRepo
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public class SQLUserRepo : IUserRepo
     {
-        private readonly NotesDbContext _context;
+        private readonly SQLDbContext _context;
 
-        public UserRepo(NotesDbContext context)
+        public SQLUserRepo(SQLDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -37,9 +38,15 @@ namespace ShoppingNotes.Data
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<User?> GetUserByUserNameAsync(string userName)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserName== userName);
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

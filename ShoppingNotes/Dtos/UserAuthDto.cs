@@ -3,9 +3,9 @@
 namespace ShoppingNotes.Dtos
 {
     /// <summary>
-    /// A DTO for creating users
+    /// A DTO for authenticating users
     /// </summary>
-    public class UserCreateDto
+    public class UserAuthDto
     {
         /// <summary>
         /// The users user name

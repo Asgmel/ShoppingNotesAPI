@@ -14,11 +14,5 @@ namespace ShoppingNotes.Dtos
         [MaxLength(30)]
         public string? Name { get; set; }
 
-        /// <summary>
-        /// The ID of the user that creates the list
-        /// </summary>
-        [Required]
-        public int UserId { get; set; }
-
     }
 }
