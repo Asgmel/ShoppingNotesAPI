@@ -92,7 +92,7 @@ namespace ShoppingNotes.Controllers
                 return NotFound();
             }
 
-            var sList = await _sListRepo.GetListByIdAsync(note.SListId, false);
+            var sList = await _sListRepo.GetListByIdAsync(note.SListId);
 
             if (sList == null)
             {
@@ -123,7 +123,7 @@ namespace ShoppingNotes.Controllers
         [HttpPost]
         public async Task<ActionResult<SListReadDto>> CreateNote(NoteCreateDto noteCreateDto)
         {
-            var sList = await _sListRepo.GetListByIdAsync(noteCreateDto.SListId, false);
+            var sList = await _sListRepo.GetListByIdAsync(noteCreateDto.SListId);
 
             if (sList == null)
             {

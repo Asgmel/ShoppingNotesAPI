@@ -24,22 +24,25 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
+        BearerFormat = "JWT",
         Description = "Input a valid token to access this API"
     });
 
-    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "NotesBearerAuth"
-                }
-            }, new List<string>()
-        }
-    });
+    setupAction.OperationFilter<AuthorizationOperationFilter>();
+
+    //setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference
+    //            {
+    //                Type = ReferenceType.SecurityScheme,
+    //                Id = "NotesBearerAuth"
+    //            }
+    //        }, new List<string>()
+    //    }
+    //});
 });
 
 builder.Services.AddDbContext<SQLDbContext>(

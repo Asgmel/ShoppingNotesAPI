@@ -68,11 +68,12 @@ namespace ShoppingNotes.Controllers
         /// <response code="201">Created - The user was created successfully</response>
         /// <response code="400">Bad Request - Invalid user input</response>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<UserReadDto>> CreateUser(UserCreateDto userCreateDto)
         {
-            var userExists = await _userRepo.GetUserByUserNameAsync(userCreateDto.UserName!);
+            userCreateDto.UserName = userCreateDto.UserName!.ToLower();
 
-            Console.WriteLine(userExists);
+            var userExists = await _userRepo.GetUserByUserNameAsync(userCreateDto.UserName!);
 
             if (userExists != null)
             {
@@ -174,8 +175,11 @@ namespace ShoppingNotes.Controllers
         /// <response code="400">Bad Request - Invalid user input</response>
         /// <response code="401">Unauthorized - Wrong user name or password</response>
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> Login(UserAuthDto userAuthDto)
         {
+            userAuthDto.UserName = userAuthDto.UserName!.ToLower();
+
             var user = await _userRepo.GetUserByUserNameAsync(userAuthDto.UserName!);
 
             if (user == null)

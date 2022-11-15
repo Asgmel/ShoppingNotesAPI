@@ -100,12 +100,11 @@
             <response code="200">Ok - List get request successfull</response>
             <response code="400">Bad Request - Invalid user input</response>
         </member>
-        <member name="M:ShoppingNotes.Controllers.SListsController.GetListById(System.Int32,System.Boolean)">
+        <member name="M:ShoppingNotes.Controllers.SListsController.GetListById(System.Int32)">
             <summary>
             Gets a single list by ID
             </summary>
             <param name="id">The list ID</param>
-            <param name="includeNotes">true if the result should include the lists notes, false otherwise</param>
             <returns>A single list</returns>
             <response code="200">Ok - List get request successfull</response>
             <response code="400">Bad Request - Invalid user input</response>
@@ -534,6 +533,18 @@
             Creates a JWT token for the user
             </summary>
             <returns>a string with the users JWT token</returns>
+        </member>
+        <member name="T:AuthorizationOperationFilter">
+            <summary>
+            A filter to apply padlocks to only routes that require authentication
+            </summary>
+        </member>
+        <member name="M:AuthorizationOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies the filter
+            </summary>
+            <param name="operation"></param>
+            <param name="context"></param>
         </member>
     </members>
 </doc>
